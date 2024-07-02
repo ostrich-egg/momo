@@ -19,7 +19,11 @@ def expected_args(Args, color):
     return embed
 
 
-######################### ---Command Class--- ############################################################
+##########################################################################################################
+###################################### ---Command Class--- ###############################################
+##########################################################################################################
+
+
 class BasicCommands(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -51,7 +55,6 @@ class BasicCommands(commands.Cog):
     @commands.guild_only()
     @commands.bot_has_guild_permissions(ban_members=True)
     @commands.has_guild_permissions(ban_members=True)
-    # @commands.is_owner()
     async def ban(
         self,
         ctx: commands.Context,
@@ -138,6 +141,16 @@ class BasicCommands(commands.Cog):
                 )
             )
 
+    ######################### Kick ############################################################
+    @commands.command()
+    async def kick(
+        self,
+        ctx: commands.Context,
+        member: discord.User = None,
+        *reason: typing.Optional[str],
+    ):
+        pass
+
     ######################### say ############################################################
     @commands.command()
     async def say(self, ctx: commands.Context, *content: str):
@@ -147,6 +160,26 @@ class BasicCommands(commands.Cog):
             )
 
         return await ctx.send(f"{" ".join(content)},  -*{ctx.author}*")
+
+    ######################### Role ############################################################
+    @commands.command()
+    @commands.guild_only()
+    async def roles(self, ctx: commands.Context, member: discord.Member = None):
+        Desc = f"Roles of {member.global_name}" if member is not None else "Your Roles"
+        member = member if member is not None else ctx.author
+        roles = [role.name for role in member.roles]
+        return await ctx.send(embed=discord_print(f"{Desc} : ", "\n".join(roles)))
+
+    ######################### List rolls of guild ############################################################
+    @commands.command()
+    @commands.guild_only()
+    async def list_roles(
+        self,
+        ctx: commands.Context,
+    ):
+        guild = ctx.guild
+        roles = set(role.name for role in guild.roles)
+        return await ctx.send(embed=discord_print("Roles Available", "\n".join(roles)))
 
     ######################### commands ############################################################
     @commands.command()
