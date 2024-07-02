@@ -165,8 +165,12 @@ class BasicCommands(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def roles(self, ctx: commands.Context, member: discord.Member = None):
-        Desc = f"Roles of {member.global_name}" if member is not None else "Your Roles"
         member = member if member is not None else ctx.author
+        Desc = (
+            f"Roles of {member.global_name}"
+            if hasattr(member, "global_name") and member.global_name is not None
+            else f"Roles of {member.name}"
+        )
         roles = [role.name for role in member.roles]
         return await ctx.send(embed=discord_print(f"{Desc} : ", "\n".join(roles)))
 
