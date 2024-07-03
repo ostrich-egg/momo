@@ -3,20 +3,44 @@ import discord
 import typing
 from typing import Literal
 
+from .custom_msg import discord_print, expected_args
 
-######################### --Format-- ############################################################
-def discord_print(title="Commands", description="", colour=discord.Color.blurple()):
-    embed = discord.Embed(
-        title=title,
-        description=description,
-        color=colour,
-    )
-    return embed
+"""
+class BasicCommands
+
+    hello
+        !hello (it will greet to author)
+        !hello @somebody
 
 
-def expected_args(Args, color):
-    embed = discord_print("Expected Args:", Args, color)
-    return embed
+    ping
+        !ping (it will ping to author)
+        !ping somebody
+
+    ban
+        !ban somebody
+        !ban somebody1 somebody2
+
+    unban
+        !unban somebody
+
+    kick
+        !kick somebody
+        !kick somebody1 somebody2
+
+    say
+        !say i love you
+
+    roles
+        !roles (it will list your roles)
+        !roles somebody
+
+    list_role
+        !list_role  (it will list role of your guild)
+
+    commands
+        !commands
+"""
 
 
 ##########################################################################################################
@@ -190,7 +214,7 @@ class BasicCommands(commands.Cog):
         roles = [role.name for role in member.roles]
         return await ctx.send(embed=discord_print(f"{Desc} : ", "\n".join(roles)))
 
-    ######################### List rolls of guild ############################################################
+    ######################### List roles of guild ############################################################
     @commands.command()
     @commands.guild_only()
     async def list_roles(

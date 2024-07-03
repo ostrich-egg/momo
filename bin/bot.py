@@ -14,6 +14,7 @@ async def main():
     bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
     await bot.load_extension("cogs.basic")
     await bot.load_extension("cogs.listener")
+    await bot.load_extension("cogs.channel")
 
     return await bot.start(TOKEN)
 
