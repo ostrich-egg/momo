@@ -143,13 +143,29 @@ class BasicCommands(commands.Cog):
 
     ######################### Kick ############################################################
     @commands.command()
+    @commands.has_guild_permissions(kick_members=True)
+    @commands.bot_has_guild_permissions(kick_members=True)
+    @commands.guild_only()
     async def kick(
         self,
         ctx: commands.Context,
-        member: discord.User = None,
+        members: commands.Greedy[discord.Member] = None,
         *reason: typing.Optional[str],
     ):
-        pass
+        if members is None:
+            return await ctx.send(
+                embed=expected_args(
+                    "!kick \n'members(guild's member)' \n'reason(optional)'",
+                    discord.Color.red(),
+                )
+            )
+        reason = "No particular reason" if not reason else " ".join(reason)
+
+        for member in members:
+            await member.kick(reason=reason)
+            return await ctx.send(
+                f"**Kicked** *{member.display_name}* \n**Reason** : *{reason}* "
+            )
 
     ######################### say ############################################################
     @commands.command()
