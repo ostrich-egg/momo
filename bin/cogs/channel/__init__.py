@@ -193,10 +193,18 @@ class Channel(commands.Cog):
                 r"(youtube|youtu|youtube-nocookie)\.(com|be)/"
                 r"(watch\?v=|embed/|v/|.+\?v=|.+/)?([^&=%\?]{11})"
             )
+
+            FFMPEG_OPTIONS = {
+                "before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 7",
+                "options": "-vn",
+            }
+
             type = "url" if url_pattern.search(song) else "text"
             response = ytdl_audio(song, type)
 
-            ctx.voice_client.play(discord.FFmpegPCMAudio(response["url"]))
+            ctx.voice_client.play(
+                discord.FFmpegPCMAudio(response["url"], **FFMPEG_OPTIONS)
+            )
             text = re.sub(re.compile(r"(?<=\b\w) (?=\w\b)"), "", response["title"])
 
             return await ctx.send(f"Now playing:  **{"".join((text.split("  ")))}**")
