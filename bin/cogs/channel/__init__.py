@@ -5,6 +5,18 @@ import typing
 from ..basic.custom_msg import expected_args
 
 
+"""
+class Channel
+
+<permission : manage_guild = True>
+    newcategory
+    newchannel
+    delchannel
+    delcategory
+
+"""
+
+
 class Channel(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -12,23 +24,37 @@ class Channel(commands.Cog):
     ######################### Create category ############################################################
     @commands.command()
     @commands.guild_only()
+    @commands.has_guild_permissions(manage_guild=True)
     async def newcategory(self, ctx: commands.Context, name: str = None):
+        """
+        Creates a new category in the server.
+
+        Example:
+            !newcategory 'text only'
+
+        Arguments:
+            name (str): The name of the category to be created.
+                        If not provided, an error message will be shown.
+
+        Raises:
+            discord.DiscordException: If an error occurs while creating the category.
+        """
         try:
             if name is None:
                 return await ctx.send(
                     embed=expected_args(
-                        "!create_cat\n *name of category*", discord.Color.red()
+                        "!newcategory\n*name of category*", discord.Color.red()
                     )
                 )
             await ctx.guild.create_category(name=name)
-            return await ctx.send(f"New category created : **{name}**")
-
-        except discord.DiscordException as e:
-            await ctx.send(f"An Error occured while creating category {e}")
+            return await ctx.send(f"New category created: **{name}**")
+        except Exception as e:
+            await ctx.send(f"An error occurred while creating the category: {e}")
 
     ######################### Create new Channel ############################################################
     @commands.command()
     @commands.guild_only()
+    @commands.has_guild_permissions(manage_guild=True)
     async def newchannel(
         self,
         ctx: commands.Context,
@@ -65,12 +91,13 @@ class Channel(commands.Cog):
                 f"New {type} channel created : **{name}** in {category}"
             )
 
-        except discord.DiscordException as e:
+        except Exception as e:
             await ctx.send(f"Cannot create channel {e}")
 
     ######################### Delete Channel ############################################################
     @commands.command()
     @commands.guild_only()
+    @commands.has_guild_permissions(manage_guild=True)
     async def delchannel(
         self,
         ctx: commands.Context,
@@ -82,7 +109,7 @@ class Channel(commands.Cog):
             if channels is None:
                 return await ctx.send(
                     embed=expected_args(
-                        "!delete\n *channel*",
+                        "!delchannel\n *channel*",
                         discord.Color.red(),
                     )
                 )
@@ -93,12 +120,13 @@ class Channel(commands.Cog):
                 await channel.delete()
             return await ctx.send(f"Deleted Channel :  **{" ".join(list_channel)}**")
 
-        except discord.DiscordException as e:
+        except Exception as e:
             await ctx.send(f"Error on Deleting your request {e}")
 
     ######################### Delete Category ############################################################
     @commands.command()
     @commands.guild_only()
+    @commands.has_guild_permissions(manage_guild=True)
     async def delcategory(
         self, ctx: commands.Context, category: discord.CategoryChannel = None
     ):
@@ -106,14 +134,36 @@ class Channel(commands.Cog):
             if category is None:
                 return await ctx.send(
                     embed=expected_args(
-                        "!delete\n *category*",
+                        "!delcategory \n*category*",
                         discord.Color.red(),
                     )
                 )
             await category.delete()
             return await ctx.send(f"Deleted Category **{category}**")
-        except discord.DiscordException as e:
+        except Exception as e:
             await ctx.send(f"Cannot delete category {e}")
+
+    ######################### Join Voice Channel ############################################################
+    @commands.command()
+    @commands.guild_only()
+    async def join(
+        self,
+        ctx: commands.Context,
+    ):
+        try:
+            if not ctx.author.voice:
+                return await ctx.send("You are not in voice channel")
+
+            channel = ctx.author.voice.channel
+
+            if ctx.voice_client:
+                await ctx.voice_client.disconnect()
+
+            await channel.connect()
+            return await ctx.send(f"Joined channel **{channel}**")
+
+        except Exception as e:
+            return await ctx.send(f"Cannot join {e}")
 
 
 ######################### Setup ##################################################################
