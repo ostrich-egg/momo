@@ -16,6 +16,7 @@ class Channel
     delchannel
     delcategory
     join
+    play
 
 """
 
