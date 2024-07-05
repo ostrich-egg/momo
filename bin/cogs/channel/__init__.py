@@ -1,10 +1,10 @@
 from discord.ext import commands
 import discord
 import typing
-import re
+# import re
 
 from ..basic.custom_msg import expected_args
-from .audio import ytdl_audio
+# from ..musicplayer.audio import ytdl_audio
 
 
 """
@@ -15,8 +15,6 @@ class Channel
     newchannel
     delchannel
     delcategory
-    join
-    play
 
 """
 
@@ -146,71 +144,6 @@ class Channel(commands.Cog):
             return await ctx.send(f"Deleted Category **{category}**")
         except Exception as e:
             await ctx.send(f"Cannot delete category {e}")
-
-    ######################### Join Voice Channel ############################################################
-    @commands.command()
-    @commands.guild_only()
-    async def join(
-        self,
-        ctx: commands.Context,
-    ):
-        try:
-            if not ctx.author.voice:
-                return await ctx.send("You are not in voice channel")
-
-            channel = ctx.author.voice.channel
-
-            if ctx.voice_client:
-                await ctx.voice_client.disconnect()
-
-            await channel.connect()
-            # ffopts = {"options": "-vn"}
-            # ctx.voice_client.play(discord.FFmpegPCMAudio(extract_audio()))
-            return await ctx.send(f"Joined channel **{channel}**")
-
-        except Exception as e:
-            return await ctx.send(f"Cannot join. {e}")
-
-        ######################### Join Voice Channel ############################################################
-
-    @commands.command()
-    @commands.guild_only()
-    async def play(
-        self,
-        ctx: commands.Context,
-        *,
-        song=None,
-    ):
-        try:
-            if ctx.voice_client is None:
-                return await ctx.send("Allow me to join voice channel first")
-
-            if song is None:
-                return await ctx.send(embed=expected_args("!play \n*[title or url]*"))
-
-            url_pattern = re.compile(
-                r"^(https?://)?(www\.)?"
-                r"(youtube|youtu|youtube-nocookie)\.(com|be)/"
-                r"(watch\?v=|embed/|v/|.+\?v=|.+/)?([^&=%\?]{11})"
-            )
-
-            FFMPEG_OPTIONS = {
-                "before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 7",
-                "options": "-vn",
-            }
-
-            type = "url" if url_pattern.search(song) else "text"
-            response = ytdl_audio(song, type)
-
-            ctx.voice_client.play(
-                discord.FFmpegPCMAudio(response["url"], **FFMPEG_OPTIONS)
-            )
-            text = re.sub(re.compile(r"(?<=\b\w) (?=\w\b)"), "", response["title"])
-
-            return await ctx.send(f"Now playing:  **{"".join((text.split("  ")))}**")
-
-        except Exception as e:
-            return await ctx.send(f"Error on playing {e}")
 
 
 ######################### Setup ##################################################################

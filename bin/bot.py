@@ -15,6 +15,7 @@ async def main():
     await bot.load_extension("cogs.basic")
     await bot.load_extension("cogs.listener")
     await bot.load_extension("cogs.channel")
+    await bot.load_extension("cogs.musicplayer")
 
     return await bot.start(TOKEN)
 

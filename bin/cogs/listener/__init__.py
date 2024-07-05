@@ -69,5 +69,6 @@ class ClientListener(commands.Cog):
             return await channel.send(embed=embed)
 
 
+######################### Setup ##################################################################
 async def setup(bot: commands.Bot):
     await bot.add_cog(ClientListener(bot))
