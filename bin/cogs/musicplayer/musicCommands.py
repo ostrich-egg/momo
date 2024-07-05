@@ -4,6 +4,7 @@ import typing
 import re
 from ..basic.custom_msg import expected_args
 from .audio import ytdl_audio
+from .options import url_pattern, FFMPEG_OPTIONS
 
 
 ################################################################################################################
@@ -44,8 +45,7 @@ class musicCommands(commands.Cog):
                 await ctx.voice_client.disconnect()
 
             await channel.connect()
-            # ffopts = {"options": "-vn"}
-            # ctx.voice_client.play(discord.FFmpegPCMAudio(extract_audio()))
+
             return await ctx.send(f"Joined channel **{channel}**")
 
         except Exception as e:
@@ -67,17 +67,6 @@ class musicCommands(commands.Cog):
             if song is None:
                 return await ctx.send(embed=expected_args("!play \n*[title or url]*"))
 
-            url_pattern = re.compile(
-                r"^(https?://)?(www\.)?"
-                r"(youtube|youtu|youtube-nocookie)\.(com|be)/"
-                r"(watch\?v=|embed/|v/|.+\?v=|.+/)?([^&=%\?]{11})"
-            )
-
-            FFMPEG_OPTIONS = {
-                "before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 7",
-                "options": "-vn",
-            }
-
             type = "url" if url_pattern.search(song) else "text"
             response = ytdl_audio(song, type)
 
@@ -92,3 +81,38 @@ class musicCommands(commands.Cog):
 
         except Exception as e:
             return await ctx.send(f"Error on playing {e}")
+
+    ######################### stop Music ############################################################
+    @commands.command()
+    @commands.guild_only()
+    async def stop(self, ctx: commands.Context):
+        try:
+            print("is playing", ctx.voice_client.is_playing())
+            if ctx.voice_client is None or ctx.voice_client.is_playing() is False:
+                return await ctx.send("Song is not playing to stop")
+            ctx.voice_client.stop()
+        except Exception as e:
+            return await ctx.send(f"Error on stop. {e}")
+
+    ######################### pause Music ############################################################
+    @commands.command()
+    @commands.guild_only()
+    async def pause(self, ctx: commands.Context):
+        try:
+            if ctx.voice_client is None:
+                return await ctx.send("Song is not playing to pause")
+            ctx.voice_client.pause()
+        except Exception as e:
+            return await ctx.send(f"Error on stop. {e}")
+
+    ######################### resume Music ############################################################
+    @commands.command()
+    @commands.guild_only()
+    async def resume(self, ctx: commands.Context):
+        try:
+            print(ctx.voice_client)
+            if ctx.voice_client is None or ctx.voice_client.is_paused() is False:
+                return await ctx.send("Song is not paused to resume")
+            ctx.voice_client.resume()
+        except Exception as e:
+            return await ctx.send(f"Error on stop. {e}")
