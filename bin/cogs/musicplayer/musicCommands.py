@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-import typing
 import re
 from ..basic.custom_msg import expected_args
 from .audio import ytdl_audio
@@ -14,6 +13,12 @@ from .options import url_pattern, FFMPEG_OPTIONS
 """
 class musicCommands
 
+
+    _player
+        (this is not command)
+    _q
+        (this is not command)
+
 permission : guild only
 
     join
@@ -21,6 +26,14 @@ permission : guild only
     play
         !play song_name
         !play song_url
+    skip
+        !skip
+    pause
+        !pause
+    resume
+        !resume
+
+    
 
 
 """
@@ -58,7 +71,7 @@ class musicCommands(commands.Cog):
             )
 
         except Exception as e:
-            await ctx.send(f"Error on _q {e}")
+            await ctx.send(f"Error on _player :  {e}")
 
     ######################### __Queue Music (not commands) ############################################################
     async def _q(self, ctx: commands.Context, *, song=None):
@@ -83,7 +96,7 @@ class musicCommands(commands.Cog):
             await self._player(ctx)
 
         except Exception as e:
-            await ctx.send(f"Error on _q {e}")
+            await ctx.send(f"Error on _q :  {e}")
 
     ######################### Join Voice Channel ############################################################
     @commands.command()
@@ -99,14 +112,14 @@ class musicCommands(commands.Cog):
             channel = ctx.author.voice.channel
 
             if ctx.voice_client:
-                await ctx.send(f"I am at :  {channel}")
+                await ctx.send(f"I am at channel:  *{channel}*")
                 return await ctx.voice_client.move_to(channel=channel)
 
             await channel.connect()
             return await ctx.send(f"Joined channel **{channel}**")
 
         except Exception as e:
-            return await ctx.send(f"Cannot join. {e}")
+            return await ctx.send(f"Error while joining :  {e}")
 
     ######################### Play Music ############################################################
     @commands.command()
@@ -124,27 +137,35 @@ class musicCommands(commands.Cog):
                 return await ctx.send("Allow me to join voice channel first")
 
             if song is None:
-                return await ctx.send(embed=expected_args("!play \n*[title or url]*"))
+                return await ctx.send(
+                    embed=expected_args(
+                        Args="!play \n*[title or url]*", color=discord.Color.red()
+                    )
+                )
 
             # call for Queue
             await self._q(ctx, song=song)
 
         except Exception as e:
-            return await ctx.send(f"Error on playing {e}")
+            return await ctx.send(f"Error while playing : {e}")
 
     ######################### stop Music ############################################################
     @commands.command()
     @commands.guild_only()
-    async def stop(self, ctx: commands.Context):
+    async def skip(self, ctx: commands.Context):
         try:
-            if ctx.voice_client is None or ctx.voice_client.is_playing() is False:
-                return await ctx.send("Song is not playing to stop")
+            if ctx.voice_client is None:
+                return await ctx.send("No song in queue to skip")
+
+            if len(response_array) == 0 and ctx.voice_client.is_playing() is False:
+                return await ctx.send("No music to skip")
 
             ctx.voice_client.stop()
-            await ctx.send(f"Music stopped by *{ctx.author}*")
+            await ctx.send(f"Music skipped by *{ctx.author}*")
+            await self._player(ctx)
 
         except Exception as e:
-            return await ctx.send(f"Error on stop. {e}")
+            return await ctx.send(f"Error while skipping :  {e}")
 
     ######################### pause Music ############################################################
     @commands.command()
@@ -158,7 +179,7 @@ class musicCommands(commands.Cog):
             await ctx.send(f"Music paused by *{ctx.author}*")
 
         except Exception as e:
-            return await ctx.send(f"Error on stop. {e}")
+            return await ctx.send(f"Error while pause :  {e}")
 
     ######################### resume Music ############################################################
     @commands.command()
@@ -172,4 +193,20 @@ class musicCommands(commands.Cog):
             await ctx.send(f"Music resumed by *{ctx.author}*")
 
         except Exception as e:
-            return await ctx.send(f"Error on stop. {e}")
+            return await ctx.send(f"Error while resuming : {e}")
+
+    ######################### leave voice channel ################################################################
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(manage_events=True)
+    @commands.bot_has_guild_permissions(manage_events=True)
+    async def leave(self, ctx: commands.Context):
+        try:
+            if ctx.voice_client is None:
+                return await ctx.send("Not in voice channel")
+
+            await ctx.voice_client.disconnect()
+            return await ctx.send(f"Leaving channel *{ctx.author.voice.channel}*")
+
+        except Exception as e:
+            return await ctx.send(f"Error while stopping : {e}")

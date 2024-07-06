@@ -44,8 +44,3 @@ def ytdl_audio(url="https://youtu.be/dQw4w9WgXcQ?si=5XbMEbJQpmsH2kpY", type="url
 
     except Exception as e:
         print(f"Error in code {e}")
-
-
-# v = extract_audio("back in black", "text")
-# fps : null
-# "format_note": "medium"
