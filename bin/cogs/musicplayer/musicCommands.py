@@ -210,3 +210,19 @@ class musicCommands(commands.Cog):
 
         except Exception as e:
             return await ctx.send(f"Error while stopping : {e}")
+
+    ######################### leave voice channel ################################################################
+    @commands.command()
+    @commands.guild_only()
+    @commands.has_permissions(manage_events=True)
+    @commands.bot_has_guild_permissions(manage_events=True)
+    async def stop(self, ctx: commands.Context):
+        try:
+            if ctx.voice_client is None:
+                return await ctx.send("Not in voice channel")
+
+            await ctx.voice_client.stop()
+            return await ctx.send(f"Music player stopped by {ctx.author}")
+
+        except Exception as e:
+            return await ctx.send(f"Error while stopping : {e}")
