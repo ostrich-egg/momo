@@ -32,6 +32,8 @@ permission : guild only
         !pause
     resume
         !resume
+    now
+        !now (it gives about now playing audio and In queue audio)
 
 permission : manage_events = True
 
