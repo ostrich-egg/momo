@@ -10,6 +10,6 @@ def discord_print(title="Commands", description="", colour=discord.Color.blurple
     return embed
 
 
-def expected_args(Args, color):
+def expected_args(Args, color=discord.Color.red()):
     embed = discord_print("Expected Args:", Args, color)
     return embed

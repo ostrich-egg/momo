@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import re
-from ..basic.custom_msg import expected_args
+from ..basic.custom_msg import expected_args, discord_print
 from .audio import ytdl_audio
 from .options import url_pattern, FFMPEG_OPTIONS
 
@@ -33,12 +33,20 @@ permission : guild only
     resume
         !resume
 
+permission : manage_events = True
+
+    leave        
+        !leave (bot leave voice channel)
+
+
+
     
 
 
 """
 
 response_array = []
+now = ""
 
 
 class musicCommands(commands.Cog):
@@ -65,10 +73,12 @@ class musicCommands(commands.Cog):
             )
 
             text = re.sub(re.compile(r"(?<=\b\w) (?=\w\b)"), "", response["title"])
+            text = "".join((text.split("  ")))
 
-            await ctx.send(
-                f"Now playing  :loudspeaker:   : *{"".join((text.split("  ")))}*"
-            )
+            global now
+            now = text
+
+            await ctx.send(f"Now playing  :loudspeaker:   : *{text}*")
 
         except Exception as e:
             await ctx.send(f"Error on _player :  {e}")
@@ -162,7 +172,6 @@ class musicCommands(commands.Cog):
 
             ctx.voice_client.stop()
             await ctx.send(f"Music skipped by *{ctx.author}*")
-            await self._player(ctx)
 
         except Exception as e:
             return await ctx.send(f"Error while skipping :  {e}")
@@ -211,18 +220,25 @@ class musicCommands(commands.Cog):
         except Exception as e:
             return await ctx.send(f"Error while stopping : {e}")
 
-    ######################### leave voice channel ################################################################
+    ######################### Now voice channel ###################################################################
     @commands.command()
     @commands.guild_only()
-    @commands.has_permissions(manage_events=True)
-    @commands.bot_has_guild_permissions(manage_events=True)
-    async def stop(self, ctx: commands.Context):
+    async def now(self, ctx: commands.Context):
         try:
             if ctx.voice_client is None:
                 return await ctx.send("Not in voice channel")
 
-            await ctx.voice_client.stop()
-            return await ctx.send(f"Music player stopped by {ctx.author}")
+            if ctx.voice_client.is_playing() is False or now is None:
+                return await ctx.send("Music is not playing right now!")
 
+            list = "\n".join([each["title"] for each in response_array])
+
+            # await ctx.voice_client.
+            return await ctx.send(
+                embed=discord_print(
+                    "Now Playing",
+                    f":small_blue_diamond: {now} \n\n**In Queue**:\n*{list or None}*",
+                )
+            )
         except Exception as e:
-            return await ctx.send(f"Error while stopping : {e}")
+            return await ctx.send(f"Error on now : {e}")
