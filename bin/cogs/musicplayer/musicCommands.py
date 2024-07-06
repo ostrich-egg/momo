@@ -15,14 +15,17 @@ class musicCommands
 
 
     _player
-        (this is not command)
+        (this is not a command)
     _q
-        (this is not command)
+        (this is not a command)
 
+        
+        
+@commands.command()
 permission : guild only
 
     join
-        !join. (you must be in voice channel first)
+        !join.
     play
         !play song_name
         !play song_url
@@ -33,10 +36,10 @@ permission : guild only
     resume
         !resume
     now
-        !now (it gives about now playing audio and In queue audio)
+        !now (it gives title of currently playing audio and audio that are on queue)
 
+        
 permission : manage_events = True
-
     leave        
         !leave (bot leave voice channel)
 
