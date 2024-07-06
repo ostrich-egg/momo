@@ -2,8 +2,16 @@ import yt_dlp
 
 
 ytdl_info = {
-    # "format": "m4a/bestaudio/best",
-    "format": "bestaudio",
+    "format": "bestaudio/best",
+    "outtmpl": "%(extractor)s-%(id)s-%(title)s.%(ext)s",
+    "restrictfilenames": True,
+    "noplaylist": True,
+    "nocheckcertificate": True,
+    "ignoreerrors": False,
+    "logtostderr": False,
+    "quiet": True,
+    "no_warnings": True,
+    "default_search": "auto",
     # ℹ️ See help(yt_dlp.postprocessor) for a list of available Postprocessors and their arguments
     "postprocessors": [
         {  # Extract audio using ffmpeg
@@ -12,9 +20,6 @@ ytdl_info = {
         }
     ],
 }
-
-
-
 
 
 def ytdl_audio(url="https://youtu.be/dQw4w9WgXcQ?si=5XbMEbJQpmsH2kpY", type="url"):
