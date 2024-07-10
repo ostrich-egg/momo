@@ -27,8 +27,6 @@ def ytdl_audio(url="https://youtu.be/dQw4w9WgXcQ?si=5XbMEbJQpmsH2kpY", type="url
         if type == "text":
             url = f"ytsearch:{url}"
 
-        # print("url", url, "type", type)
-
         info = {"url": "", "title": ""}
 
         with yt_dlp.YoutubeDL(ytdl_info) as ytdl:

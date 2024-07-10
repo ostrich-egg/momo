@@ -238,6 +238,10 @@ class musicCommands(commands.Cog):
 
             list = "\n".join([each["title"] for each in response_array])
 
+            print(".")
+            print("now", now)
+            print(list)
+
             # await ctx.voice_client.
             return await ctx.send(
                 embed=discord_print(

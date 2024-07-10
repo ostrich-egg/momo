@@ -1,10 +1,7 @@
 from discord.ext import commands
 import discord
 import typing
-# import re
-
 from ..basic.custom_msg import expected_args
-# from ..musicplayer.audio import ytdl_audio
 
 
 """
@@ -29,6 +26,7 @@ class Channel(commands.Cog):
     @commands.has_guild_permissions(manage_guild=True)
     async def newcategory(self, ctx: commands.Context, name: str = None):
         """
+
         Creates a new category in the server.
 
         Example:

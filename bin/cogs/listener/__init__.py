@@ -2,8 +2,6 @@ import discord
 from discord.ext import commands
 import random
 import aiohttp
-
-# import typing
 import dotenv
 import os
 
@@ -29,7 +27,6 @@ async def api_call():
         ) as response:
             if response.status == 200:
                 data = await response.json()
-                # print("data", data)
                 gif_url = (
                     data["data"][0]["images"]["original"]["url"]
                     if data["data"]
