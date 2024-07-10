@@ -6,12 +6,13 @@
 
 ## Features
 
-- Dynamic welcome messages with gif.
-- control your channel/category.
-- manage your guild's members.
+- Dynamic welcome messages with GIFs.  
+- Control your channel/category.
+- Manage your guild's members.
 - Play whatever music you like.
-- It automatically Queue music.
+- Automatically queue music.
 
+-----
 
 ## Uses
 
@@ -20,7 +21,7 @@ use :  "!" as a command prefix
 use "!help" or "!commands" to see the commands that are available.
 ```
 
------
+
 
 
 ## Installation
@@ -57,6 +58,5 @@ GIF_TOKEN = DVkaydsfkldsjfklfjSPdslfkjkWLX
 - *TOKEN : from discord developer portal.    (required)*<br>
 - *GIF_TOKEN : from https://developers.giphy.com/.    (not compulsory)*<br>
 
-`lets go, now you can serve yourself a delicious momo`
+`Let's go, now you can serve yourself a delicious momo!`
 
------
