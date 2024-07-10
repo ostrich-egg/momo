@@ -47,6 +47,12 @@ python bot.py
 
 ## Before you start
 
+**Go to this link, to order some momo**<br>
+```sh
+https://discord.com/oauth2/authorize?client_id=1254760826116767787
+```
+<br>
+<br>
 **Make sure your .env file looks like this**<br>
 
 ```sh
@@ -58,5 +64,10 @@ GIF_TOKEN = DVkaydsfkldsjfklfjSPdslfkjkWLX
 - *TOKEN : from discord developer portal.    (required)*<br>
 - *GIF_TOKEN : from https://developers.giphy.com/.    (not compulsory)*<br>
 
+
+
+
 `Let's go, now you can serve yourself a delicious momo!`
+
+
 
