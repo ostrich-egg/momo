@@ -2,7 +2,7 @@
 
 <img src="logo.jpeg" alt="logo" width = "300" height= "auto" ><br>
 
-A delicious and extremely tasty discord bot that offers more than you could eat.
+> A delicious and extremely tasty discord bot that offers more than you could eat.
 
 ## Features
 
@@ -13,27 +13,17 @@ A delicious and extremely tasty discord bot that offers more than you could eat.
 - It automatically Queue music.
 
 
-### Uses
+## Uses
 
 ```
 use :  "!" as a command prefix
 use "!help" or "!commands" to see the commands that are available.
 ```
 
-#### Setup
+-----
 
-**Make your .env file like this**<br>
 
-```sh
-TOKEN = OTI1tastytastymomow.GTdkfalsfkfj.4LYH0h_xUHB4dkslfjkfljfkljf_joD1Z0tka4VQ
-GIF_TOKEN = DVkaydsfkldsjfklfjSPdslfkjkWLX
-
-```
-
-- *TOKEN -> from discord developer account*(required)<br>
-- *GIF-TOKEN -> from https://developers.giphy.com/* (not compulsory)<br>
-
-##### Installation
+## Installation
 
 ```sh
 git clone https://github.com/ostrich-egg/momo.git
@@ -53,5 +43,20 @@ cd bin
 python bot.py
 ```
 
+
+## Before you start
+
+**Make sure your .env file looks like this**<br>
+
+```sh
+TOKEN = OTI1tastytastymomow.GTdkfalsfkfj.4LYH0h_xUHB4dkslfjkfljfkljf_joD1Z0tka4VQ
+GIF_TOKEN = DVkaydsfkldsjfklfjSPdslfkjkWLX
+
+```
+
+- *TOKEN : from discord developer portal.    (required)*<br>
+- *GIF_TOKEN : from https://developers.giphy.com/.    (not compulsory)*<br>
+
 `lets go, now you can serve yourself a delicious momo`
 
+-----
