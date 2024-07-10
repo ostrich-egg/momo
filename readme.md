@@ -1,6 +1,6 @@
 # momo
 
-![Logo](logo.jpeg)<br>
+<img src="logo.jpeg" alt="logo" width = "300" height= "auto"><br>
 
 A delicious and extremely tasty discord bot that offers more than you could eat.
 
